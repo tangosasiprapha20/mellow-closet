@@ -9,6 +9,8 @@ export default function Checkout({ cart = [], clearCart }) {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [showQR, setShowQR] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const items = useMemo(() => (Array.isArray(cart) ? cart : []), [cart]);
 
@@ -40,11 +42,11 @@ export default function Checkout({ cart = [], clearCart }) {
 
   const openPayment = () => {
     if (!isCustomerInfoValid) {
-      alert("กรุณากรอกข้อมูลให้ครบ");
+      setToast({ type: "error", message: "กรุณากรอกข้อมูลให้ครบ" });
       return;
     }
     if (!items.length) {
-      alert("ตะกร้าว่าง");
+      setToast({ type: "error", message: "ตะกร้าว่าง" });
       return;
     }
     setShowQR(true);
@@ -52,27 +54,41 @@ export default function Checkout({ cart = [], clearCart }) {
 
   const handleConfirmOrder = async () => {
     if (!isCustomerInfoValid) {
-      alert("กรุณากรอกข้อมูลให้ครบ");
+      setToast({ type: "error", message: "กรุณากรอกข้อมูลให้ครบ" });
       return;
     }
     if (!items.length) {
-      alert("ตะกร้าว่าง");
+      setToast({ type: "error", message: "ตะกร้าว่าง" });
       return;
     }
    
-    await clearCart({
-      cart: items,
-      name: name.trim(),
-      phone: phone.trim(),
-      address: address.trim(),
-    });
+    try {
+      setIsSubmitting(true);
+      await clearCart({
+        cart: items,
+        name: name.trim(),
+        phone: phone.trim(),
+        address: address.trim(),
+      });
 
-    setShowQR(false);
-    setName("");
-    setPhone("");
-    setAddress("");
+      setShowQR(false);
+      setName("");
+      setPhone("");
+      setAddress("");
 
-    alert("สั่งซื้อสำเร็จ 🎉");
+      setToast({
+        type: "success",
+        message: "สั่งสินค้าสำเร็จ โปรดรอการแจ้งเลขพัสดุหลังแจ้งสลิป",
+      });
+      window.setTimeout(() => setToast(null), 4500);
+    } catch {
+      setToast({
+        type: "error",
+        message: "เกิดข้อผิดพลาดในการสั่งซื้อ กรุณาลองใหม่อีกครั้ง",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -154,11 +170,12 @@ export default function Checkout({ cart = [], clearCart }) {
             <button
               onClick={handleConfirmOrder}
               type="button"
+              disabled={isSubmitting}
               className={`w-full py-2 rounded-xl text-white ${
-                "bg-green-600"
+                isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-green-600"
               }`}
             >
-              ยืนยันออเดอร์
+              {isSubmitting ? "กำลังส่งออเดอร์..." : "ยืนยันออเดอร์"}
             </button>
 
             <p className="text-center text-sm text-zinc-600">
@@ -169,6 +186,29 @@ export default function Checkout({ cart = [], clearCart }) {
         )}
 
       </div>
+
+      {toast && (
+        <div className="fixed inset-x-0 bottom-5 z-50 px-4">
+          <div
+            className={`mx-auto flex w-full max-w-md items-start justify-between gap-3 rounded-xl border p-4 shadow-lg ${
+              toast.type === "success"
+                ? "border-green-200 bg-green-50 text-green-900"
+                : "border-red-200 bg-red-50 text-red-900"
+            }`}
+            role="status"
+            aria-live="polite"
+          >
+            <p className="text-sm leading-relaxed">{toast.message}</p>
+            <button
+              type="button"
+              onClick={() => setToast(null)}
+              className="rounded-md px-2 py-1 text-sm font-semibold opacity-80 hover:opacity-100"
+            >
+              ปิด
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
