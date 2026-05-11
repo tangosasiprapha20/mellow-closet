@@ -17,6 +17,12 @@ export default function Home({
           </Link>
 
           <div className="flex items-center gap-3">
+            <Link
+              to="/contact"
+              className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100"
+            >
+              ติดต่อเรา
+            </Link>
             <button
               onClick={() => setIsLoggedIn(false)}
               className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100"

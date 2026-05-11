@@ -5,6 +5,7 @@ import Home from "./pages/Home.jsx";
 import Cart from "./pages/Cart.jsx";
 import Login from "./pages/Login.jsx";
 import Checkout from "./pages/Checkout.jsx";
+import Contact from "./pages/Contact.jsx";
 
 /** ส่งออเดอร์ไป Discord */
 async function sendOrderToDiscord({
@@ -146,6 +147,76 @@ export default function App() {
       image:
         "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&auto=format&fit=crop",
     },
+    {
+      id: 4,
+      name: "Denim Jeans",
+      price: 420,
+      image:
+        "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      id: 5,
+      name: "Canvas Tote Bag",
+      price: 180,
+      image:
+        "https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      id: 6,
+      name: "Wool Sweater",
+      price: 360,
+      image:
+        "https://images.unsplash.com/photo-1520975958221-6d6f4b0b0e8a?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      id: 7,
+      name: "Black Dress",
+      price: 490,
+      image:
+        "https://images.unsplash.com/photo-1520975693411-35a46e33f3c3?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      id: 8,
+      name: "Leather Belt",
+      price: 160,
+      image:
+        "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      id: 9,
+      name: "Sneakers",
+      price: 520,
+      image:
+        "https://images.unsplash.com/photo-1528701800489-20be3c2ea06b?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      id: 10,
+      name: "Beanie Hat",
+      price: 120,
+      image:
+        "https://images.unsplash.com/photo-1520975917031-7b3cbb77c4a1?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      id: 11,
+      name: "Plaid Skirt",
+      price: 310,
+      image:
+        "https://images.unsplash.com/photo-1520975809650-44d72c36b2b6?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      id: 12,
+      name: "Oversized Blazer",
+      price: 540,
+      image:
+        "https://images.unsplash.com/photo-1520975867597-0f0c0f2d8f2b?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+      id: 13,
+      name: "Classic White Tee",
+      price: 190,
+      image:
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop",
+    },
   ];
 
   const addToCart = (product) => {
@@ -257,6 +328,17 @@ export default function App() {
                 cart={cart}
                 clearCart={clearCart}
               />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/contact"
+          element={
+            isLoggedIn ? (
+              <Contact />
             ) : (
               <Navigate to="/" replace />
             )
