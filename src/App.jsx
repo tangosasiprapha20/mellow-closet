@@ -168,6 +168,45 @@ async function sendOrderCancellationToDiscord(order) {
   }
 }
 
+/** ส่งแจ้งเตือนล็อกอินเข้า Discord */
+async function sendLoginToDiscord(email) {
+  const url = import.meta.env.VITE_DISCORD_WEBHOOK_URL;
+  if (!url) return;
+
+  const payload = {
+    embeds: [
+      {
+        title: "🔐 มีผู้ใช้เข้าสู่ระบบ",
+        color: 0x2563eb,
+        fields: [
+          {
+            name: "📧 อีเมล",
+            value: email || "-",
+          },
+          {
+            name: "🕒 เวลา",
+            value: new Date().toLocaleString("th-TH"),
+            inline: true,
+          },
+        ],
+        footer: { text: "Mellow Closet Login Monitor" },
+        timestamp: new Date().toISOString(),
+      },
+    ],
+  };
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    console.log("Discord login status:", res.status);
+  } catch (err) {
+    console.log("Discord login error:", err);
+  }
+}
+
 export default function App() {
   const [cart, setCart] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -366,6 +405,11 @@ export default function App() {
     }
   };
 
+  const handleLoginSuccess = async (email) => {
+    setIsLoggedIn(true);
+    await sendLoginToDiscord(email);
+  };
+
   return (
     <BrowserRouter>
       <Routes>
@@ -378,6 +422,7 @@ export default function App() {
             ) : (
               <Login
                 setIsLoggedIn={setIsLoggedIn}
+                onLoginSuccess={handleLoginSuccess}
               />
             )
           }

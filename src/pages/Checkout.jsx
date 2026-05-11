@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 import PromptPayQR from "promptpay-qr"; // ✅ FIX: ต้องใช้แบบนี้
 
@@ -78,7 +79,8 @@ export default function Checkout({ cart = [], clearCart }) {
 
       setToast({
         type: "success",
-        message: "สั่งสินค้าสำเร็จ โปรดรอการแจ้งเลขพัสดุหลังแจ้งสลิป",
+        message:
+          "ชำระเงินสำเร็จแล้ว สามารถกดปุ่มดูประวัติการสั่งซื้อเพื่อตรวจสอบรายการได้",
       });
       window.setTimeout(() => setToast(null), 4500);
     } catch {
@@ -178,6 +180,13 @@ export default function Checkout({ cart = [], clearCart }) {
               {isSubmitting ? "กำลังส่งออเดอร์..." : "ยืนยันออเดอร์"}
             </button>
 
+            <Link
+              to="/orders"
+              className="flex w-full items-center justify-center rounded-xl border border-zinc-300 bg-white py-2 text-sm font-medium text-zinc-800 transition hover:bg-zinc-50"
+            >
+              ดูประวัติการสั่งซื้อ
+            </Link>
+
             <p className="text-center text-sm text-zinc-600">
               โอนแล้วแจ้งสลิปใน Line/Instagram
             </p>
@@ -207,6 +216,17 @@ export default function Checkout({ cart = [], clearCart }) {
               ปิด
             </button>
           </div>
+          {toast.type === "success" && (
+            <div className="mx-auto mt-2 w-full max-w-md">
+              <Link
+                to="/orders"
+                onClick={() => setToast(null)}
+                className="block w-full rounded-xl bg-zinc-900 py-2.5 text-center text-sm font-medium text-white transition hover:bg-zinc-800"
+              >
+                ดูประวัติการสั่งซื้อ
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </div>
