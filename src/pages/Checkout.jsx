@@ -179,7 +179,7 @@ export default function Checkout({ cart = [], clearCart }) {
             </button>
 
             <p className="text-center text-sm text-zinc-600">
-              โอนแล้วแจ้งสลิปในแชท
+              โอนแล้วแจ้งสลิปใน Line/Instagram
             </p>
 
           </div>
