@@ -6,6 +6,7 @@ import Cart from "./pages/Cart.jsx";
 import Login from "./pages/Login.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import Contact from "./pages/Contact.jsx";
+import OrderHistory from "./pages/OrderHistory.jsx";
 
 /** ส่งออเดอร์ไป Discord */
 async function sendOrderToDiscord({
@@ -118,9 +119,59 @@ async function sendOrderToDiscord({
   }
 }
 
+/** ส่งแจ้งเตือนยกเลิกออเดอร์ไป Discord */
+async function sendOrderCancellationToDiscord(order) {
+  const url = import.meta.env.VITE_DISCORD_WEBHOOK_URL;
+  if (!url || !order) return;
+
+  const itemsText = (order.items || [])
+    .map((item) => {
+      const qty = item.quantity || 1;
+      return `• ${item.name} x${qty} = ฿${item.price * qty}`;
+    })
+    .join("\n");
+
+  const payload = {
+    embeds: [
+      {
+        title: `❌ ยกเลิกออเดอร์ #${order.orderId}`,
+        color: 0xdc2626,
+        fields: [
+          { name: "👤 ลูกค้า", value: order.name || "-", inline: true },
+          { name: "📞 เบอร์", value: order.phone || "-", inline: true },
+          { name: "📍 ที่อยู่", value: order.address || "-" },
+          { name: "📦 รายการสินค้า", value: itemsText || "-" },
+          { name: "💰 ยอดเดิม", value: `฿${order.total || 0}`, inline: true },
+          {
+            name: "🕒 เวลาที่ยกเลิก",
+            value: order.canceledAt
+              ? new Date(order.canceledAt).toLocaleString("th-TH")
+              : new Date().toLocaleString("th-TH"),
+            inline: true,
+          },
+        ],
+        footer: { text: "Mellow Closet Order System" },
+        timestamp: new Date().toISOString(),
+      },
+    ],
+  };
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    console.log("Discord cancel status:", res.status);
+  } catch (err) {
+    console.log("Discord cancel error:", err);
+  }
+}
+
 export default function App() {
   const [cart, setCart] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [orderHistory, setOrderHistory] = useState([]);
 
   // ✅ เลขออเดอร์
   const [orderId, setOrderId] = useState(1001);
@@ -267,10 +318,52 @@ export default function App() {
 
     await sendOrderToDiscord(payload);
 
+    const purchasedItems = [...payload.cart];
+    const total = purchasedItems.reduce(
+      (sum, item) => sum + item.price * (item.quantity || 1),
+      0
+    );
+
+    setOrderHistory((prev) => [
+      {
+        orderId: payload.orderId,
+        name: payload.name,
+        phone: payload.phone,
+        address: payload.address,
+        items: purchasedItems,
+        total,
+        createdAt: new Date().toISOString(),
+        status: "paid",
+        canceledAt: null,
+      },
+      ...prev,
+    ]);
+
     // ✅ เพิ่มเลขออเดอร์อัตโนมัติ
     setOrderId((prev) => prev + 1);
 
     setCart([]);
+  };
+
+  const cancelOrder = async (targetOrderId) => {
+    let canceledOrder = null;
+    setOrderHistory((prev) =>
+      prev.map((order) =>
+        order.orderId === targetOrderId && order.status !== "canceled"
+          ? (() => {
+              canceledOrder = {
+                ...order,
+                status: "canceled",
+                canceledAt: new Date().toISOString(),
+              };
+              return canceledOrder;
+            })()
+          : order
+      )
+    );
+    if (canceledOrder) {
+      await sendOrderCancellationToDiscord(canceledOrder);
+    }
   };
 
   return (
@@ -299,6 +392,20 @@ export default function App() {
                 addToCart={addToCart}
                 cart={cart}
                 setIsLoggedIn={setIsLoggedIn}
+              />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/orders"
+          element={
+            isLoggedIn ? (
+              <OrderHistory
+                orderHistory={orderHistory}
+                onCancelOrder={cancelOrder}
               />
             ) : (
               <Navigate to="/" replace />

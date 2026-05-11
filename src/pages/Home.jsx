@@ -18,6 +18,12 @@ export default function Home({
 
           <div className="flex items-center gap-3">
             <Link
+              to="/orders"
+              className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100"
+            >
+              ประวัติการสั่งซื้อ
+            </Link>
+            <Link
               to="/contact"
               className="rounded-lg px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-100"
             >
