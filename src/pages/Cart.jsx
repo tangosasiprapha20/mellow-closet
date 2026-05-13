@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
+const IMG_FALLBACK =
+  "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop";
+
 export default function Cart({ cart, removeFromCart }) {
   const totalPrice = cart.reduce(
     (total, item) => total + item.price * (item.quantity ?? 1),
@@ -8,76 +11,78 @@ export default function Cart({ cart, removeFromCart }) {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-100 via-zinc-50 to-zinc-100 px-5 py-8 text-left md:px-8 md:py-12">
-      <div className="mx-auto max-w-2xl">
+    <div className="min-h-screen bg-[#fafafa] px-5 py-10 md:px-8 md:py-14">
+      <div className="mx-auto max-w-xl">
         <Link
           to="/home"
-          className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-600 transition hover:text-zinc-900"
+          className="mb-10 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-500 transition hover:text-neutral-900"
         >
-          <ArrowLeft className="h-4 w-4" strokeWidth={2} />
-          กลับไปเลือกสินค้า
+          <ArrowLeft className="h-3.5 w-3.5" strokeWidth={1.5} />
+          กลับ
         </Link>
 
-        <h1 className="mb-2 text-3xl font-semibold tracking-tight text-zinc-900">
-          ตะกร้าสินค้า
+        <h1 className="text-2xl font-light tracking-tight text-neutral-900">
+          ตะกร้า
         </h1>
-        <p className="mb-8 text-zinc-500">
-          ตรวจสอบรายการก่อนชำระเงิน
+        <p className="mt-2 text-sm text-neutral-500">
+          ตรวจรายการก่อนชำระเงิน
         </p>
 
         {cart.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-zinc-300 bg-white/60 px-8 py-16 text-center">
-            <p className="text-zinc-600">ยังไม่มีสินค้าในตะกร้า</p>
+          <div className="mt-12 border border-dashed border-neutral-200 bg-white px-8 py-16 text-center">
+            <p className="text-sm text-neutral-500">ตะกร้าว่าง</p>
             <Link
               to="/home"
-              className="mt-6 inline-flex rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+              className="mt-8 inline-block border border-neutral-900 bg-neutral-900 px-6 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-white hover:text-neutral-900"
             >
-              ไปเลือกสินค้า
+              เลือกสินค้า
             </Link>
           </div>
         ) : (
           <>
-            <ul className="space-y-3">
+            <ul className="mt-10 divide-y divide-neutral-200 border border-neutral-200 bg-white">
               {cart.map((item, index) => (
                 <li
                   key={`${item.id}-${index}`}
-                  className="flex gap-4 rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-sm"
+                  className="flex gap-4 p-4 md:p-5"
                 >
                   <img
-                    src={item.image}
-                    alt=""
-                    className="h-24 w-24 shrink-0 rounded-xl object-cover ring-1 ring-zinc-100"
+                    src={item.image || IMG_FALLBACK}
+                    alt={item.name}
+                    loading="lazy"
+                    className="h-24 w-20 shrink-0 object-cover bg-neutral-100"
                   />
                   <div className="min-w-0 flex-1">
-                    <h2 className="font-semibold text-zinc-900">{item.name}</h2>
-                    <p className="mt-1 text-sm text-zinc-500">
-                      ฿{item.price}{" "}
-                      <span className="text-zinc-400">
-                        × {item.quantity ?? 1}
-                      </span>
+                    <h2 className="text-sm font-medium text-neutral-900">
+                      {item.name}
+                    </h2>
+                    <p className="mt-1 text-sm tabular-nums text-neutral-500">
+                      ฿{Number(item.price).toLocaleString("th-TH")} × {item.quantity ?? 1}
                     </p>
                     <button
                       type="button"
                       onClick={() => removeFromCart?.(item.id)}
-                      className="mt-3 inline-flex rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:bg-zinc-50"
+                      className="mt-3 text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 underline decoration-neutral-200 underline-offset-4 hover:text-neutral-900"
                     >
-                      ลบออก
+                      ลบ
                     </button>
                   </div>
                 </li>
               ))}
             </ul>
 
-            <div className="mt-8 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm">
-              <div className="flex items-baseline justify-between border-b border-zinc-100 pb-4">
-                <span className="text-sm font-medium text-zinc-500">ยอดรวม</span>
-                <span className="text-2xl font-semibold tabular-nums text-zinc-900">
-                  ฿{totalPrice}
+            <div className="mt-8 border border-neutral-200 bg-white p-6">
+              <div className="flex items-baseline justify-between border-b border-neutral-100 pb-4">
+                <span className="text-[11px] uppercase tracking-[0.15em] text-neutral-400">
+                  รวม
+                </span>
+                <span className="text-lg font-light tabular-nums text-neutral-900">
+                  ฿{totalPrice.toLocaleString("th-TH")}
                 </span>
               </div>
-              <Link to="/checkout" className="mt-5 block">
-                <span className="flex w-full items-center justify-center rounded-xl bg-zinc-900 py-3.5 text-sm font-medium text-white shadow-sm transition hover:bg-zinc-800 active:scale-[0.99]">
-                  ดำเนินการชำระเงิน
+              <Link to="/checkout" className="mt-6 block">
+                <span className="flex w-full items-center justify-center border border-neutral-900 bg-neutral-900 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-white hover:text-neutral-900">
+                  ชำระเงิน
                 </span>
               </Link>
             </div>

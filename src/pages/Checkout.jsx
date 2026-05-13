@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
-import PromptPayQR from "promptpay-qr"; // ✅ FIX: ต้องใช้แบบนี้
+import PromptPayQR from "promptpay-qr";
 
 const DEFAULT_PROMPTPAY = "0979589118";
 
@@ -20,7 +20,6 @@ export default function Checkout({ cart = [], clearCart }) {
     [items]
   );
 
-  // ✅ FIX: สร้าง PromptPay QR จริง
   const promptPayPayload = useMemo(() => {
     if (total <= 0) return "";
     try {
@@ -34,7 +33,7 @@ export default function Checkout({ cart = [], clearCart }) {
   }, [total]);
 
   const fieldClass =
-    "mb-2 w-full rounded-lg border border-zinc-300 bg-white p-3 text-base text-zinc-900";
+    "mb-3 w-full border border-neutral-200 bg-white px-3 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900";
 
   const isCustomerInfoValid =
     name.trim().length > 0 &&
@@ -62,7 +61,7 @@ export default function Checkout({ cart = [], clearCart }) {
       setToast({ type: "error", message: "ตะกร้าว่าง" });
       return;
     }
-   
+
     try {
       setIsSubmitting(true);
       await clearCart({
@@ -80,13 +79,13 @@ export default function Checkout({ cart = [], clearCart }) {
       setToast({
         type: "success",
         message:
-          "ชำระเงินสำเร็จแล้ว สามารถกดปุ่มดูประวัติการสั่งซื้อเพื่อตรวจสอบรายการได้",
+          "ส่งคำสั่งซื้อแล้ว ดูประวัติได้ที่เมนูคำสั่งซื้อ",
       });
       window.setTimeout(() => setToast(null), 4500);
     } catch {
       setToast({
         type: "error",
-        message: "เกิดข้อผิดพลาดในการสั่งซื้อ กรุณาลองใหม่อีกครั้ง",
+        message: "เกิดข้อผิดพลาด กรุณาลองใหม่",
       });
     } finally {
       setIsSubmitting(false);
@@ -94,14 +93,15 @@ export default function Checkout({ cart = [], clearCart }) {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-100 flex justify-center items-start p-6">
-
-      <div className="w-full max-w-md bg-white p-6 rounded-xl shadow">
-
-        <h1 className="text-xl font-bold mb-4">Checkout</h1>
+    <div className="flex min-h-screen items-start justify-center bg-[#fafafa] p-5 py-12 md:p-8">
+      <div className="w-full max-w-md border border-neutral-200 bg-white p-8 shadow-sm">
+        <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-neutral-400">
+          Checkout
+        </p>
+        <h1 className="mt-3 text-xl font-light text-neutral-900">ชำระเงิน</h1>
 
         <input
-          className={fieldClass}
+          className={`${fieldClass} mt-6`}
           placeholder="ชื่อ"
           value={name}
           type="text"
@@ -120,16 +120,15 @@ export default function Checkout({ cart = [], clearCart }) {
         />
 
         <textarea
-          placeholder="ที่อยู่"
+          placeholder="ที่อยู่จัดส่ง"
           value={address}
           rows={4}
-          className={`${fieldClass} min-h-[110px] resize-y`}
+          className={`${fieldClass} min-h-[100px] resize-y`}
           autoComplete="street-address"
           onChange={(e) => setAddress(e.target.value)}
         />
 
-        {/* รายการสินค้า */}
-        <div className="text-sm mb-3">
+        <div className="mb-4 space-y-1 border-t border-neutral-100 pt-4 text-xs text-neutral-600">
           {items.map((item) => (
             <div key={item.id}>
               {item.name} ×{item.quantity || 1}
@@ -137,81 +136,84 @@ export default function Checkout({ cart = [], clearCart }) {
           ))}
         </div>
 
-        <p className="font-bold mb-3">รวม ฿{total}</p>
+        <p className="mb-6 text-sm tabular-nums text-neutral-900">
+          รวม <span className="font-medium">฿{total.toLocaleString("th-TH")}</span>
+        </p>
 
-        {/* ปุ่มเปิด QR */}
         {!showQR ? (
           <button
+            type="button"
             onClick={openPayment}
             disabled={!isCustomerInfoValid || !items.length}
-            className={`w-full py-2 rounded-xl text-white ${
+            className={`w-full border py-3 text-[11px] font-medium uppercase tracking-[0.2em] transition ${
               isCustomerInfoValid && items.length
-                ? "bg-black"
-                : "bg-gray-400 cursor-not-allowed"
+                ? "border-neutral-900 bg-neutral-900 text-white hover:bg-white hover:text-neutral-900"
+                : "cursor-not-allowed border-neutral-200 bg-neutral-50 text-neutral-400"
             }`}
           >
-            ชำระเงิน (PromptPay)
+            PromptPay
           </button>
         ) : (
-          <div className="space-y-4">
-
-            <div className="text-center border p-4 rounded-xl">
-              <h2 className="font-bold mb-2">สแกนเพื่อโอน</h2>
-
+          <div className="space-y-5">
+            <div className="border border-neutral-200 bg-neutral-50 p-5 text-center">
+              <p className="text-[11px] uppercase tracking-[0.15em] text-neutral-500">
+                สแกนเพื่อโอน
+              </p>
               {promptPayPayload ? (
-                <div className="flex justify-center">
-                  <QRCodeSVG value={promptPayPayload} size={200} />
+                <div className="mt-4 flex justify-center">
+                  <QRCodeSVG value={promptPayPayload} size={192} />
                 </div>
               ) : (
-                <p className="text-red-500">สร้าง QR ไม่ได้</p>
+                <p className="mt-4 text-sm text-red-600">สร้าง QR ไม่ได้</p>
               )}
-
-              <p className="mt-2 text-sm">ยอด: ฿{total}</p>
+              <p className="mt-3 text-sm tabular-nums text-neutral-700">
+                ฿{total.toLocaleString("th-TH")}
+              </p>
             </div>
 
             <button
               onClick={handleConfirmOrder}
               type="button"
               disabled={isSubmitting}
-              className={`w-full py-2 rounded-xl text-white ${
-                isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-green-600"
+              className={`w-full border py-3 text-[11px] font-medium uppercase tracking-[0.2em] ${
+                isSubmitting
+                  ? "cursor-not-allowed border-neutral-200 text-neutral-400"
+                  : "border-neutral-900 bg-white text-neutral-900 hover:bg-neutral-900 hover:text-white"
               }`}
             >
-              {isSubmitting ? "กำลังส่งออเดอร์..." : "ยืนยันออเดอร์"}
+              {isSubmitting ? "กำลังส่ง..." : "ยืนยันคำสั่งซื้อ"}
             </button>
 
             <Link
               to="/orders"
-              className="flex w-full items-center justify-center rounded-xl border border-zinc-300 bg-white py-2 text-sm font-medium text-zinc-800 transition hover:bg-zinc-50"
+              className="flex w-full items-center justify-center py-2 text-[11px] uppercase tracking-[0.15em] text-neutral-500 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900"
             >
-              ดูประวัติการสั่งซื้อ
+              ดูประวัติ
             </Link>
 
-            <p className="text-center text-sm text-zinc-600">
-              โอนแล้วแจ้งสลิปใน Line/Instagram
+            <p className="text-center text-xs text-neutral-500">
+              โอนแล้วแจ้งสลิปทาง Line / Instagram
             </p>
-
           </div>
         )}
-
       </div>
 
       {toast && (
-        <div className="fixed inset-x-0 bottom-5 z-50 px-4">
+        <div className="fixed inset-x-0 bottom-6 z-50 px-4">
           <div
-            className={`mx-auto flex w-full max-w-md items-start justify-between gap-3 rounded-xl border p-4 shadow-lg ${
+            className={`mx-auto flex w-full max-w-md items-start justify-between gap-3 border p-4 text-sm ${
               toast.type === "success"
-                ? "border-green-200 bg-green-50 text-green-900"
+                ? "border-neutral-200 bg-white text-neutral-900"
                 : "border-red-200 bg-red-50 text-red-900"
             }`}
             role="status"
             aria-live="polite"
           >
-            <p className="text-sm leading-relaxed">{toast.message}</p>
+            <p>{toast.message}</p>
             <button
               type="button"
               onClick={() => setToast(null)}
-              className="rounded-md px-2 py-1 text-sm font-semibold opacity-80 hover:opacity-100"
+              className="shrink-0 text-xs uppercase tracking-wider text-neutral-500 hover:text-neutral-900"
             >
               ปิด
             </button>
@@ -221,9 +223,9 @@ export default function Checkout({ cart = [], clearCart }) {
               <Link
                 to="/orders"
                 onClick={() => setToast(null)}
-                className="block w-full rounded-xl bg-zinc-900 py-2.5 text-center text-sm font-medium text-white transition hover:bg-zinc-800"
+                className="block w-full border border-neutral-900 bg-neutral-900 py-2.5 text-center text-[11px] font-medium uppercase tracking-[0.18em] text-white hover:bg-white hover:text-neutral-900"
               >
-                ดูประวัติการสั่งซื้อ
+                ไปที่ประวัติ
               </Link>
             </div>
           )}

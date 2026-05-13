@@ -4,106 +4,124 @@ import { ArrowLeft } from "lucide-react";
 export default function OrderHistory({
   orderHistory = [],
   onCancelOrder = () => {},
+  onRemoveOrder = () => {},
+  onClearAllOrders = () => {},
 }) {
   const handleCancel = async (orderId) => {
-    const ok = window.confirm(
-      `ยืนยันยกเลิกออเดอร์ #${orderId} ?`
-    );
+    const ok = window.confirm(`ยืนยันยกเลิกออเดอร์ #${orderId} ?`);
     if (!ok) return;
     await onCancelOrder(orderId);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-100 via-zinc-50 to-zinc-100 px-5 py-8 text-left md:px-8 md:py-12">
-      <div className="mx-auto max-w-3xl">
+    <div className="min-h-screen bg-[#fafafa] px-5 py-10 md:px-8 md:py-14">
+      <div className="mx-auto max-w-2xl">
         <Link
           to="/home"
-          className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-600 transition hover:text-zinc-900"
+          className="mb-10 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-500 transition hover:text-neutral-900"
         >
-          <ArrowLeft className="h-4 w-4" strokeWidth={2} />
-          กลับหน้าแรก
+          <ArrowLeft className="h-3.5 w-3.5" strokeWidth={1.5} />
+          กลับ
         </Link>
 
-        <h1 className="mb-2 text-3xl font-semibold tracking-tight text-zinc-900">
-          ประวัติการสั่งซื้อ
-        </h1>
-        <p className="mb-8 text-zinc-500">
-          รายการออเดอร์ล่าสุดของคุณจะถูกบันทึกไว้ที่หน้านี้
-        </p>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-light tracking-tight text-neutral-900">
+              คำสั่งซื้อ
+            </h1>
+            <p className="mt-2 text-sm text-neutral-500">
+              บันทึกบนอุปกรณ์นี้
+            </p>
+          </div>
+          {orderHistory.length > 0 && (
+            <button
+              type="button"
+              onClick={() => onClearAllOrders()}
+              className="text-[11px] font-medium uppercase tracking-[0.15em] text-neutral-400 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900"
+            >
+              ลบทั้งหมด
+            </button>
+          )}
+        </div>
 
         {orderHistory.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-zinc-300 bg-white/60 px-8 py-16 text-center">
-            <p className="text-zinc-600">ยังไม่มีประวัติการสั่งซื้อ</p>
+          <div className="mt-14 border border-dashed border-neutral-200 bg-white px-8 py-16 text-center">
+            <p className="text-sm text-neutral-500">ยังไม่มีประวัติ</p>
             <Link
               to="/home"
-              className="mt-6 inline-flex rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
+              className="mt-8 inline-block border border-neutral-900 bg-neutral-900 px-6 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-white hover:text-neutral-900"
             >
-              ไปเลือกสินค้า
+              เลือกสินค้า
             </Link>
           </div>
         ) : (
-          <ul className="space-y-4">
+          <ul className="mt-10 space-y-6">
             {orderHistory.map((order) => (
               <li
                 key={order.orderId}
-                className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm"
+                className="border border-neutral-200 bg-white p-6"
               >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="text-lg font-semibold text-zinc-900">
-                    ออเดอร์ #{order.orderId}
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <p className="text-sm font-medium text-neutral-900">
+                    #{order.orderId}
                   </p>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                        order.status === "canceled"
-                          ? "bg-red-100 text-red-700"
-                          : "bg-green-100 text-green-700"
-                      }`}
-                    >
-                      {order.status === "canceled" ? "ยกเลิกแล้ว" : "ชำระเงินแล้ว"}
-                    </span>
-                    <p className="text-sm text-zinc-500">
-                      {new Date(order.createdAt).toLocaleString("th-TH")}
-                    </p>
-                  </div>
+                  <span
+                    className={`text-[10px] uppercase tracking-[0.12em] ${
+                      order.status === "canceled"
+                        ? "text-neutral-400"
+                        : "text-neutral-600"
+                    }`}
+                  >
+                    {order.status === "canceled" ? "ยกเลิก" : "ชำระแล้ว"}
+                  </span>
+                </div>
+                <p className="mt-1 text-xs text-neutral-400">
+                  {new Date(order.createdAt).toLocaleString("th-TH")}
+                </p>
+
+                <div className="mt-4 space-y-1 text-xs text-neutral-600">
+                  <p>{order.name}</p>
+                  <p>{order.phone}</p>
+                  <p className="leading-relaxed">{order.address}</p>
                 </div>
 
-                <div className="mt-3 space-y-1 text-sm text-zinc-700">
-                  <p>ลูกค้า: {order.name || "-"}</p>
-                  <p>เบอร์โทร: {order.phone || "-"}</p>
-                  <p>ที่อยู่: {order.address || "-"}</p>
-                </div>
-
-                <div className="mt-4 rounded-xl bg-zinc-50 p-3">
+                <div className="mt-4 border-t border-neutral-100 pt-4 text-xs text-neutral-600">
                   {order.items.map((item, idx) => (
-                    <p key={`${order.orderId}-${item.id}-${idx}`} className="text-sm text-zinc-700">
-                      {item.name} ×{item.quantity || 1} = ฿
-                      {item.price * (item.quantity || 1)}
+                    <p key={`${order.orderId}-${item.id}-${idx}`}>
+                      {item.name} ×{item.quantity || 1} — ฿
+                      {(item.price * (item.quantity || 1)).toLocaleString("th-TH")}
                     </p>
                   ))}
                 </div>
 
-                <p className="mt-4 text-right text-base font-semibold text-zinc-900">
-                  รวม ฿{order.total}
+                <p className="mt-4 text-right text-sm tabular-nums text-neutral-900">
+                  ฿{Number(order.total || 0).toLocaleString("th-TH")}
                 </p>
 
-                <div className="mt-3 flex justify-end">
+                <div className="mt-4 flex flex-wrap justify-end gap-3">
                   {order.status === "canceled" ? (
-                    <p className="text-xs text-red-600">
+                    <p className="text-xs text-neutral-400">
                       ยกเลิกเมื่อ{" "}
                       {order.canceledAt
                         ? new Date(order.canceledAt).toLocaleString("th-TH")
-                        : "-"}
+                        : "—"}
                     </p>
                   ) : (
                     <button
                       type="button"
                       onClick={() => handleCancel(order.orderId)}
-                      className="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-700 transition hover:bg-red-100"
+                      className="text-[11px] uppercase tracking-[0.12em] text-neutral-500 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900"
                     >
-                      ยกเลิกออเดอร์
+                      ยกเลิกคำสั่งซื้อ
                     </button>
                   )}
+                  <button
+                    type="button"
+                    onClick={() => onRemoveOrder(order.orderId)}
+                    className="text-[11px] uppercase tracking-[0.12em] text-neutral-400 underline decoration-neutral-200 underline-offset-4 hover:text-neutral-900"
+                  >
+                    ลบจากรายการ
+                  </button>
                 </div>
               </li>
             ))}
@@ -113,4 +131,3 @@ export default function OrderHistory({
     </div>
   );
 }
-

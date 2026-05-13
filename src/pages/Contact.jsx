@@ -3,19 +3,19 @@ import { Link } from "react-router-dom";
 const contacts = [
   {
     label: "Instagram",
-    icon: "📸",
-    value: "@mellow.closet",
+    icon: "—",
+    value: "@softlane",
     href: "https://www.instagram.com/3rdtango?igsh=d3I2eDRjNGNoeG93&utm_source=qr",
   },
   {
     label: "Line",
-    icon: "💬",
-    value: "@mellowcloset",
+    icon: "—",
+    value: "@softlane",
     href: "https://line.me/ti/p/ZcosbJ4QOQ",
   },
   {
     label: "โทรศัพท์",
-    icon: "📞",
+    icon: "—",
     value: "097-958-9118",
     href: "tel:0979589118",
   },
@@ -23,63 +23,60 @@ const contacts = [
 
 export default function Contact() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-100 via-zinc-50 to-zinc-100 px-5 py-10 md:px-8 md:py-14">
+    <div className="min-h-screen bg-[#fafafa] px-5 py-12 md:px-8 md:py-16">
       <div className="mx-auto max-w-4xl">
-        <div className="rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm md:p-8">
-          <p className="inline-flex rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600">
-            Contact & Social
+        <div className="border border-neutral-200 bg-white p-8 md:p-10">
+          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-neutral-400">
+            Contact
           </p>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 md:text-4xl">
-            ช่องทางการติดต่อ
+          <h1 className="mt-4 text-2xl font-light tracking-tight text-neutral-900 md:text-3xl">
+            ติดต่อเรา
           </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-600 md:text-base">
-            สอบถามสินค้า สต็อก และรายละเอียดการจัดส่งได้ทุกช่องทางด้านล่าง
-            ทางร้านตอบกลับตามลำดับคิวข้อความ
+          <p className="mt-5 max-w-xl text-sm leading-relaxed text-neutral-500 md:text-base">
+            สอบถามไซส์ สต็อก และการจัดส่ง — ทีมงานตอบตามลำดับข้อความ
           </p>
         </div>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-px bg-neutral-200 sm:grid-cols-3">
           {contacts.map((item) => (
             <a
               key={item.label}
               href={item.href}
               target={item.href.startsWith("http") ? "_blank" : undefined}
               rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-              className="group rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="group flex flex-col bg-white p-6 transition hover:bg-neutral-50"
             >
-              <div className="flex items-center gap-2">
-                <span className="text-lg">{item.icon}</span>
-                <p className="text-sm font-medium text-zinc-600">{item.label}</p>
-              </div>
-              <div className="mt-3 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2">
-                <p className="text-base font-semibold text-zinc-900 group-hover:text-zinc-700">
-                  {item.value}
-                </p>
-              </div>
-              
+              <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-neutral-400">
+                {item.label}
+              </p>
+              <p className="mt-4 text-sm font-medium text-neutral-900 group-hover:underline">
+                {item.value}
+              </p>
             </a>
           ))}
         </div>
 
-        <div className="mt-8 rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm md:p-6">
-          <p className="text-sm font-medium text-zinc-600">กลุ่มย้อนกลับ</p>
-          <div className="mt-4 flex flex-wrap gap-3">
-            <Link
-              to="/home"
-              className="inline-flex min-w-36 items-center justify-center rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800"
-            >
-              กลับหน้าแรก
-            </Link>
-            <Link
-              to="/cart"
-              className="inline-flex min-w-36 items-center justify-center rounded-xl border border-zinc-300 bg-white px-5 py-2.5 text-sm font-medium text-zinc-800 transition hover:bg-zinc-50"
-            >
-              ไปตะกร้าสินค้า
-            </Link>
-          </div>
+        <div className="mt-10 flex flex-wrap gap-3 border border-neutral-200 bg-white p-6">
+          <Link
+            to="/home"
+            className="inline-flex min-w-[8rem] flex-1 items-center justify-center border border-neutral-900 bg-neutral-900 px-5 py-2.5 text-center text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-white hover:text-neutral-900 sm:flex-none"
+          >
+            หน้าแรก
+          </Link>
+          <Link
+            to="/cart"
+            className="inline-flex min-w-[8rem] flex-1 items-center justify-center border border-neutral-200 bg-white px-5 py-2.5 text-center text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-800 transition hover:border-neutral-900 sm:flex-none"
+          >
+            ตะกร้า
+          </Link>
+          <Link
+            to="/about"
+            className="inline-flex min-w-[8rem] flex-1 items-center justify-center border border-neutral-200 bg-white px-5 py-2.5 text-center text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-800 transition hover:border-neutral-900 sm:flex-none"
+          >
+            เกี่ยวกับเรา
+          </Link>
         </div>
       </div>
     </div>
   );
 }
-
