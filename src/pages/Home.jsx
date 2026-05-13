@@ -27,7 +27,7 @@ export default function Home({
             to="/home"
             className="text-sm font-medium tracking-[0.25em] text-neutral-900"
           >
-            SOFTLANE
+            MELLOW-CLOSET
           </Link>
 
           <nav className="flex flex-wrap items-center justify-end gap-x-5 gap-y-2 md:gap-x-8">
@@ -224,7 +224,7 @@ export default function Home({
 
         <footer className="border-t border-neutral-200/80 py-8 text-center">
           <p className="text-[11px] uppercase tracking-[0.22em] text-neutral-400">
-            Softlane — minimal wardrobe
+            Mellow-Closet — minimal wardrobe
           </p>
         </footer>
       </main>

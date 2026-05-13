@@ -38,7 +38,7 @@ export default function About() {
             เกี่ยวกับเรา
           </h1>
           <p className="mt-6 text-sm leading-relaxed text-neutral-600 md:text-base">
-            <span className="font-medium text-neutral-900">Softlane</span>{" "}
+            <span className="font-medium text-neutral-900">Mellow-Closet</span>{" "}
             คือร้านเสื้อผ้าแนวมินิมอล เน้นสีโทนเนียร์ทรัลและผ้าที่สัมผัสสบาย
             คัดทรงที่ใส่ได้จริงในชีวิตประจำวัน ให้ตู้เสื้อผ้าดูสะอาดและใช้งานง่าย
           </p>
@@ -49,7 +49,7 @@ export default function About() {
           <div className="mt-8 overflow-hidden border border-neutral-100 bg-neutral-50">
             <img
               src={IMG_FALLBACK}
-              alt="สไตล์เสื้อผ้า Softlane"
+              alt="สไตล์เสื้อผ้า Mellow-Closet"
               loading="lazy"
               className="aspect-[16/9] w-full object-cover md:aspect-[2/1]"
             />

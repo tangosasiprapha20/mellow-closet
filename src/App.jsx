@@ -9,15 +9,18 @@ import Contact from "./pages/Contact.jsx";
 import About from "./pages/About.jsx";
 import OrderHistory from "./pages/OrderHistory.jsx";
 
-const LS_ORDER_HISTORY = "softlane.orderHistory";
+const LS_ORDER_HISTORY = "mellow-closet.orderHistory";
 const LS_ORDER_HISTORY_LEGACY = "mellow.orderHistory";
-const LS_ORDER_ID = "softlane.orderId";
+const LS_ORDER_HISTORY_SOFTLANE = "softlane.orderHistory";
+const LS_ORDER_ID = "mellow-closet.orderId";
 const LS_ORDER_ID_LEGACY = "mellow.orderId";
+const LS_ORDER_ID_SOFTLANE = "softlane.orderId";
 
 function loadOrderHistory() {
   try {
     const raw =
       localStorage.getItem(LS_ORDER_HISTORY) ??
+      localStorage.getItem(LS_ORDER_HISTORY_SOFTLANE) ??
       localStorage.getItem(LS_ORDER_HISTORY_LEGACY);
     const parsed = raw ? JSON.parse(raw) : [];
     return Array.isArray(parsed) ? parsed : [];
@@ -30,6 +33,7 @@ function loadOrderId() {
   try {
     const raw =
       localStorage.getItem(LS_ORDER_ID) ??
+      localStorage.getItem(LS_ORDER_ID_SOFTLANE) ??
       localStorage.getItem(LS_ORDER_ID_LEGACY);
     const n = raw ? Number(raw) : 1001;
     return Number.isFinite(n) ? n : 1001;
@@ -104,7 +108,7 @@ async function sendOrderToDiscord({
         ],
 
         footer: {
-          text: "Softlane Order System",
+          text: "Mellow-Closet Order System",
         },
 
         timestamp: new Date().toISOString(),
@@ -180,7 +184,7 @@ async function sendOrderCancellationToDiscord(order) {
             inline: true,
           },
         ],
-        footer: { text: "Softlane Order System" },
+        footer: { text: "Mellow-Closet Order System" },
         timestamp: new Date().toISOString(),
       },
     ],

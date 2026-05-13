@@ -4,13 +4,13 @@ const contacts = [
   {
     label: "Instagram",
     icon: "—",
-    value: "@softlane",
+    value: "@mellow.closet",
     href: "https://www.instagram.com/3rdtango?igsh=d3I2eDRjNGNoeG93&utm_source=qr",
   },
   {
     label: "Line",
     icon: "—",
-    value: "@softlane",
+    value: "@mellowcloset",
     href: "https://line.me/ti/p/ZcosbJ4QOQ",
   },
   {
