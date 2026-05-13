@@ -1,8 +1,8 @@
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
+import imgShowcase from "../assets/รูปโชว์.jpg";
 
-const IMG_FALLBACK =
-  "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop";
+const IMG_FALLBACK = imgShowcase;
 
 const navLink =
   "text-[11px] font-medium uppercase tracking-[0.2em] text-neutral-500 transition hover:text-neutral-900";

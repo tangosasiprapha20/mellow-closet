@@ -9,6 +9,22 @@ import Contact from "./pages/Contact.jsx";
 import About from "./pages/About.jsx";
 import OrderHistory from "./pages/OrderHistory.jsx";
 
+import imgShirtLinen from "./assets/เสื้อเชิ้ตนิลิน.jpg";
+import imgClassicShirt from "./assets/เสื้อคลาสสิกทรงมินิมอล.jpg";
+import imgHoodie from "./assets/ฮู้ดดี้เนื้อนุ่ม.jpg";
+import imgJeans from "./assets/กางเกงยีนส์ทรงตรง.webp";
+import imgTote from "./assets/โท้ทผ้าแคนวาส.jpg";
+import imgSweater from "./assets/สเวตเตอร์ถักโทนเนียร์ทรัล.jpg";
+import imgDress from "./assets/เดรสมินิเรียบ.jpg";
+import imgBelt from "./assets/เข็มขัดหนังเรียบ.jpg";
+import imgSneakers from "./assets/รองเท่าผ้าใบ.jpg";
+import imgBeanie from "./assets/หมวกบีนนี่ถัก.jpg";
+import imgSkirt from "./assets/กระโปรงพรีทยาว.jpg";
+import imgBlazer from "./assets/เบลเซอร์ oversize.jpg";
+import imgTrenchCoat from "./assets/เทรนช์โค้ทซีซันใหม่.jpg";
+import imgLoungewear from "./assets/เซ็ตลุคลำลองในบ้าน.jpg";
+import imgSlides from "./assets/รองเท้าแตะหนังเรียบ.jpg";
+
 const LS_ORDER_HISTORY = "mellow-closet.orderHistory";
 const LS_ORDER_HISTORY_LEGACY = "mellow.orderHistory";
 const LS_ORDER_HISTORY_SOFTLANE = "softlane.orderHistory";
@@ -231,92 +247,73 @@ export default function App() {
       id: 1,
       name: "เชิ้ตลินิน oversize",
       price: 890,
-      image:
-        "https://images.unsplash.com/photo-1596755094514-f87c340781d1?q=80&w=1000&auto=format&fit=crop",
+      image: imgShirtLinen,
     },
     {
       id: 2,
       name: "เสื้อคลาสสิกทรงมินิมอล",
       price: 690,
-      image:
-        "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop",
+      image: imgClassicShirt,
     },
     {
       id: 3,
       name: "ฮู้ดดี้เนื้อนุ่ม",
       price: 1190,
-      image:
-        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop",
+      image: imgHoodie,
     },
     {
       id: 4,
       name: "กางเกงยีนส์ทรงตรง",
       price: 1290,
-      image:
-        "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1000&auto=format&fit=crop",
+      image: imgJeans,
     },
     {
       id: 5,
       name: "โท้ทผ้าแคนวาส",
       price: 790,
-      image:
-        "https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=1000&auto=format&fit=crop",
+      image: imgTote,
     },
     {
       id: 6,
       name: "สเวตเตอร์ถักโทนเนียร์ทรัล",
       price: 1390,
-      image:
-        "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1000&auto=format&fit=crop",
+      image: imgSweater,
     },
     {
       id: 7,
       name: "เดรสมินิเรียบ",
       price: 1590,
-      image:
-        "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=1000&auto=format&fit=crop",
+      image: imgDress,
     },
     {
       id: 8,
       name: "เข็มขัดหนังเรียบ",
       price: 490,
-      image:
-        "https://images.unsplash.com/photo-1624222247344-550fb60583fd?q=80&w=1000&auto=format&fit=crop",
+      image: imgBelt,
     },
     {
       id: 9,
       name: "รองเท้าผ้าใบมินิมอล",
       price: 2490,
-      image:
-        "https://images.unsplash.com/photo-1528701800489-20be3c2ea06b?q=80&w=1000&auto=format&fit=crop",
+      image: imgSneakers,
     },
     {
       id: 10,
       name: "หมวกบีนนี่ถัก",
       price: 390,
-      image:
-        "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?q=80&w=1000&auto=format&fit=crop",
+      image: imgBeanie,
     },
     {
       id: 11,
       name: "กระโปรงพลีทยาว",
       price: 990,
-      image:
-        "https://images.unsplash.com/photo-1583496661160-fb5886a0aa0b?q=80&w=1000&auto=format&fit=crop",
+      image: imgSkirt,
     },
     {
       id: 12,
       name: "เบลเซอร์ oversize",
       price: 2290,
-      image:
-        "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=1000&auto=format&fit=crop",
-    },
-    {
-      id: 13,
-      name: "เสื้อยืดคอกลมขาว",
-      price: 490,
-      image:
-        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1000&auto=format&fit=crop",
+      image: imgBlazer,
     },
   ];
 
@@ -327,24 +324,21 @@ export default function App() {
       name: "เทรนช์โค้ทซีซันใหม่",
       teaser: "ผ้าโทนครีม ตัดเย็บเรียบ",
       eta: "เร็วๆ นี้",
-      image:
-        "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=1000&auto=format&fit=crop",
+      image: imgTrenchCoat,
     },
     {
       id: "soon-2",
       name: "เซ็ตลุคลำลองในบ้าน",
       teaser: "เสื้อผ้าเนื้อนุ่ม โทนเดียวกับร้าน",
       eta: "ปลายเดือนนี้",
-      image:
-        "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1000&auto=format&fit=crop",
+      image: imgLoungewear,
     },
     {
       id: "soon-3",
       name: "รองเท้าแตะหนังเรียบ",
       teaser: "สายเดี่ยว ดีไซน์มินิมอล",
       eta: "สัปดาห์หน้า",
-      image:
-        "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1000&auto=format&fit=crop",
+      image: imgSlides,
     },
   ];
 

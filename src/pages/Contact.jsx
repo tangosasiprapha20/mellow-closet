@@ -64,12 +64,6 @@ export default function Contact() {
             หน้าแรก
           </Link>
           <Link
-            to="/cart"
-            className="inline-flex min-w-[8rem] flex-1 items-center justify-center border border-neutral-200 bg-white px-5 py-2.5 text-center text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-800 transition hover:border-neutral-900 sm:flex-none"
-          >
-            ตะกร้า
-          </Link>
-          <Link
             to="/about"
             className="inline-flex min-w-[8rem] flex-1 items-center justify-center border border-neutral-200 bg-white px-5 py-2.5 text-center text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-800 transition hover:border-neutral-900 sm:flex-none"
           >
